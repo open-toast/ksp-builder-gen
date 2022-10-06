@@ -1,6 +1,10 @@
 
 # Builder Generator
 
+[![CircleCI](https://circleci.com/gh/open-toast/ksp-builder-gen.svg?style=svg)](https://circleci.com/gh/open-toast/ksp-builder-gen)
+[![Maven Central](https://img.shields.io/maven-central/v/com.toasttab.ksp.builder/ksp-builder-gen-processor)](https://search.maven.org/artifact/com.toasttab.ksp.builder/ksp-builder-gen-processor)
+
+
 This is a [KSP](https://github.com/google/ksp) processor that generates builders for Kotlin classes. It is intended to provide just enough functionality to help migrate away from Immutables and ditch KAPT annotation processing.
 
 ## Usage
