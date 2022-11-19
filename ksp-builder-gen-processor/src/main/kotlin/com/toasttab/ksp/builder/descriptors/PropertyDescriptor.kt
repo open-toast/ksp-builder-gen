@@ -21,7 +21,6 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.toasttab.ksp.builder.annotations.GenerateBuilder
 
@@ -33,7 +32,7 @@ sealed interface PropertyDescriptor {
     val initialValue: String
 
     companion object {
-        @OptIn(KotlinPoetKspPreview::class, KspExperimental::class)
+        @OptIn(KspExperimental::class)
         fun fromPropertyDeclaration(prop: KSPropertyDeclaration, hasDefault: Boolean): PropertyDescriptor {
             val name = prop.simpleName.asString()
             val type = prop.type.toTypeName()

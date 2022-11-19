@@ -31,14 +31,12 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.writeTo
 import com.toasttab.ksp.builder.annotations.GenerateBuilder
 import com.toasttab.ksp.builder.descriptors.ContainerPropertyDescriptor
 import com.toasttab.ksp.builder.descriptors.PropertyDescriptor
 import com.toasttab.ksp.builder.descriptors.SimpleClassDescriptor
 
-@OptIn(KotlinPoetKspPreview::class)
 class BuilderGenerator(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
