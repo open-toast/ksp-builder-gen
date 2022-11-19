@@ -76,6 +76,7 @@ publishing {
     }
 }
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 if (isRelease() && Pgp.key != null) {
     signing {
         useInMemoryPgpKeys(Pgp.key, Pgp.password)
