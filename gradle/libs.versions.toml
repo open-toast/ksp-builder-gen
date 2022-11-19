@@ -1,12 +1,12 @@
 [versions]
 # main
 autoservice = "1.0"
-kotlin = "1.7.20"
+kotlin = "1.7.21"
 kotlinLogging = "2.1.14"
-kotlinPoet = "1.11.0"
+kotlinPoet = "1.12.0"
 junit = "5.8.2"
 
-ksp = "1.7.20-1.0.6"
+ksp = "1.7.21-1.0.8"
 autoservice-ksp = "1.0.0"
 
 nexus = "0.30.0"
@@ -33,6 +33,7 @@ autoservice-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", versi
 # plugins
 nexus-staging =  { module = "io.codearte.gradle.nexus:gradle-nexus-staging-plugin", version.ref = "nexus" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.11.0" }
 
 # test
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }

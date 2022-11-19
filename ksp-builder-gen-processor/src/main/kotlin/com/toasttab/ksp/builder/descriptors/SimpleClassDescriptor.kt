@@ -64,7 +64,8 @@ class SimpleClassDescriptor private constructor(
                 simpleName = simpleName,
                 builderName = builderName,
                 properties = actualProperties,
-                deprecated = annotation.deprecated)
+                deprecated = annotation.deprecated
+            )
         }
     }
 }

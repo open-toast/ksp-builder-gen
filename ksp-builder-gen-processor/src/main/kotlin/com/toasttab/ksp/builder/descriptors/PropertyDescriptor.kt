@@ -68,7 +68,7 @@ class ScalarPropertyDescriptor internal constructor(
     override val name: String,
     override val type: TypeName,
     override val initialValue: String
-): PropertyDescriptor {
+) : PropertyDescriptor {
     override val builderType = if (initialValue == "null") type.copy(nullable = true) else type
     override val fromObjectConverter = ""
 }
@@ -78,8 +78,8 @@ data class ContainerPropertyDescriptor internal constructor(
     override val type: TypeName,
     override val builderType: TypeName,
     val parameters: List<TypeName>,
-    val containerSpec: ContainerSpec,
-): PropertyDescriptor {
+    val containerSpec: ContainerSpec
+) : PropertyDescriptor {
     override val fromObjectConverter = if (type.isNullable) {
         "?.${containerSpec.converter}"
     } else {

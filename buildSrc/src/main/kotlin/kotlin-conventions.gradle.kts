@@ -10,6 +10,13 @@ repositories {
 
 plugins {
     kotlin("jvm")
+    id("com.diffplug.spotless")
+}
+
+spotless {
+    kotlin {
+        ktlint()
+    }
 }
 
 configure<JavaPluginExtension> {

@@ -26,7 +26,7 @@ class UserDirectoryBuilderTest {
         val directory = DirectoryBuilder()
             .putAllUsers(mapOf("1" to User("Foo", null), "2" to User("Bar", null)))
             .putUsers("3", User("Zzz", null))
-        .build()
+            .build()
 
         assertThat(directory.users.mapValues { it.value.name }).containsExactly("1", "Foo", "2", "Bar", "3", "Zzz")
     }

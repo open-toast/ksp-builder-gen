@@ -21,8 +21,8 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 @AutoService(SymbolProcessorProvider::class)
-class BuilderGeneratorProvider: SymbolProcessorProvider {
+class BuilderGeneratorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-       return BuilderGenerator(environment.codeGenerator, environment.logger)
+        return BuilderGenerator(environment.codeGenerator, environment.logger)
     }
 }

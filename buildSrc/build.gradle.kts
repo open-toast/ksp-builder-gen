@@ -10,4 +10,5 @@ repositories {
 dependencies {
     implementation(libs.kotlin.gradle)
     implementation(libs.nexus.staging)
+    implementation(libs.spotless)
 }
