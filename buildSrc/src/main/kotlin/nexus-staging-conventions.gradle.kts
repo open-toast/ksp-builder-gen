@@ -1,14 +1,14 @@
-import org.gradle.kotlin.dsl.configure
-
 plugins {
-    id("io.codearte.nexus-staging")
+    id("io.github.gradle-nexus.publish-plugin")
 }
 
 if (isRelease()) {
-    nexusStaging {
-        username = Remote.username
-        password = Remote.password
-        packageGroup = "com.toasttab"
-        numberOfRetries = 50
+    nexusPublishing {
+        repositories {
+            sonatype {
+                username.set(Remote.username)
+                password.set(Remote.password)
+            }
+        }
     }
 }

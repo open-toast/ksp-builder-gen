@@ -61,19 +61,6 @@ publishing {
             }
         }
     }
-
-    if (isRelease()) {
-        repositories {
-            maven {
-                name = "remote"
-                setUrl(Remote.url)
-                credentials {
-                    username = Remote.username
-                    password = Remote.password
-                }
-            }
-        }
-    }
 }
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
@@ -85,6 +72,4 @@ if (isRelease() && Pgp.key != null) {
             sign(this)
         }
     }
-} else {
-    tasks.register("closeAndReleaseRepository")
 }

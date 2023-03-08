@@ -63,10 +63,7 @@ jobs:
       - read_cache
       - run:
           name: Publish release
-          command: "./gradlew publish --stacktrace"
-      - run:
-          name: Promote release
-          command: "./gradlew closeAndReleaseRepository --stacktrace"
+          command: "./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace"
 
 workflows:
   version: 2.1
