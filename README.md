@@ -1,7 +1,7 @@
 
 # Builder Generator
 
-[![CircleCI](https://circleci.com/gh/open-toast/ksp-builder-gen.svg?style=svg)](https://circleci.com/gh/open-toast/ksp-builder-gen)
+[![Github Actions](https://github.com/open-toast/ksp-builder-gen/actions/workflows/ci.yml/badge.svg)](https://github.com/open-toast/ksp-builder-gen/actions/workflows/ci.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.toasttab.ksp.builder/ksp-builder-gen-processor)](https://search.maven.org/artifact/com.toasttab.ksp.builder/ksp-builder-gen-processor)
 
 
