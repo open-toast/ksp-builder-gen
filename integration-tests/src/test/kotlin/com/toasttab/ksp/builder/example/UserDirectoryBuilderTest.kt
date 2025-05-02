@@ -23,10 +23,11 @@ import java.util.Collections
 class UserDirectoryBuilderTest {
     @Test
     fun `build`() {
-        val directory = DirectoryBuilder()
-            .putAllUsers(mapOf("1" to User("Foo", null), "2" to User("Bar", null)))
-            .putUsers("3", User("Zzz", null))
-            .build()
+        val directory =
+            DirectoryBuilder()
+                .putAllUsers(mapOf("1" to User("Foo", null), "2" to User("Bar", null)))
+                .putUsers("3", User("Zzz", null))
+                .build()
 
         assertThat(directory.users.mapValues { it.value.name }).containsExactly("1", "Foo", "2", "Bar", "3", "Zzz")
     }
@@ -40,9 +41,10 @@ class UserDirectoryBuilderTest {
     @Test
     fun `verify collections are defensively copied`() {
         val builder = DirectoryBuilder(UserDirectory(Collections.emptyMap(), Collections.emptyMap()))
-        val directory = assertDoesNotThrow {
-            builder.putUsers("1", User("Foo", null)).build()
-        }
+        val directory =
+            assertDoesNotThrow {
+                builder.putUsers("1", User("Foo", null)).build()
+            }
         assertThat(directory.users.mapValues { it.value.name }).containsExactly("1", "Foo")
     }
 }

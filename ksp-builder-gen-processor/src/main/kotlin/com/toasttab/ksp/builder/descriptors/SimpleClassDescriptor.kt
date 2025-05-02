@@ -26,34 +26,37 @@ class SimpleClassDescriptor private constructor(
     val simpleName: String,
     val builderName: String,
     val properties: List<PropertyDescriptor>,
-    val deprecated: Boolean
+    val deprecated: Boolean,
 ) {
     companion object {
         @OptIn(KspExperimental::class)
         fun fromDeclaration(cls: KSClassDeclaration): SimpleClassDescriptor {
-            val constructor = checkNotNull(cls.primaryConstructor) {
-                "primary constructor for ${cls.simpleName} is missing"
-            }
+            val constructor =
+                checkNotNull(cls.primaryConstructor) {
+                    "primary constructor for ${cls.simpleName} is missing"
+                }
 
             val annotation = cls.getAnnotationsByType(GenerateBuilder::class).first()
 
             val properties = cls.getAllProperties().associateBy { it.simpleName.asString() }
 
-            val actualProperties = constructor.parameters.map {
-                if (!it.isVal && !it.isVar) {
-                    error("constructor parameter ${it.name} of ${cls.simpleName}  is not backed by a property")
-                }
+            val actualProperties =
+                constructor.parameters.map {
+                    if (!it.isVal && !it.isVar) {
+                        error("constructor parameter ${it.name} of ${cls.simpleName}  is not backed by a property")
+                    }
 
-                val prop = checkNotNull(properties[it.name!!.asString()]) {
-                    "constructor parameter ${it.name} of ${cls.simpleName} is not backed by a property"
-                }
+                    val prop =
+                        checkNotNull(properties[it.name!!.asString()]) {
+                            "constructor parameter ${it.name} of ${cls.simpleName} is not backed by a property"
+                        }
 
-                if (!prop.isPublic()) {
-                    error("property ${prop.simpleName} of ${cls.simpleName} is not public")
-                }
+                    if (!prop.isPublic()) {
+                        error("property ${prop.simpleName} of ${cls.simpleName} is not public")
+                    }
 
-                PropertyDescriptor.fromPropertyDeclaration(prop = prop, hasDefault = it.hasDefault)
-            }
+                    PropertyDescriptor.fromPropertyDeclaration(prop = prop, hasDefault = it.hasDefault)
+                }
 
             val simpleName = cls.simpleName.asString()
 
@@ -64,7 +67,7 @@ class SimpleClassDescriptor private constructor(
                 simpleName = simpleName,
                 builderName = builderName,
                 properties = actualProperties,
-                deprecated = annotation.deprecated
+                deprecated = annotation.deprecated,
             )
         }
     }

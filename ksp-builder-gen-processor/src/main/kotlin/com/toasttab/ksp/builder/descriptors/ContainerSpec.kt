@@ -25,39 +25,48 @@ class ContainerSpec(
     val insertAllName: String,
     val insertAllType: ClassName,
     val insertName: String,
-    val insertParams: List<String>
+    val insertParams: List<String>,
 ) {
     companion object {
         private const val COLLECTIONS_PKG = "kotlin.collections"
-        private fun collectionSpec(initializer: String, converter: String, rawBuilderType: ClassName) = ContainerSpec(
+
+        private fun collectionSpec(
+            initializer: String,
+            converter: String,
+            rawBuilderType: ClassName,
+        ) = ContainerSpec(
             initializer = initializer,
             converter = converter,
             rawBuilderType = rawBuilderType,
             insertAllName = "addAll",
             insertAllType = ClassName(COLLECTIONS_PKG, "Iterable"),
             insertName = "add",
-            insertParams = listOf("o")
+            insertParams = listOf("o"),
         )
+
         private val LIST_SPEC = collectionSpec("mutableListOf()", "toMutableList()", ClassName(COLLECTIONS_PKG, "MutableList"))
 
-        private val BUILTINS = mapOf(
-            Map::class.asClassName() to ContainerSpec(
-                initializer = "mutableMapOf()",
-                converter = "toMutableMap()",
-                rawBuilderType = ClassName(COLLECTIONS_PKG, "MutableMap"),
-                insertAllType = ClassName(COLLECTIONS_PKG, "Map"),
-                insertAllName = "putAll",
-                insertName = "put",
-                insertParams = listOf("k", "v")
-            ),
-            Collection::class.asClassName() to LIST_SPEC,
-            List::class.asClassName() to LIST_SPEC,
-            Set::class.asClassName() to collectionSpec(
-                initializer = "mutableSetOf()",
-                converter = "toMutableSet()",
-                rawBuilderType = ClassName(COLLECTIONS_PKG, "MutableSet")
+        private val BUILTINS =
+            mapOf(
+                Map::class.asClassName() to
+                    ContainerSpec(
+                        initializer = "mutableMapOf()",
+                        converter = "toMutableMap()",
+                        rawBuilderType = ClassName(COLLECTIONS_PKG, "MutableMap"),
+                        insertAllType = ClassName(COLLECTIONS_PKG, "Map"),
+                        insertAllName = "putAll",
+                        insertName = "put",
+                        insertParams = listOf("k", "v"),
+                    ),
+                Collection::class.asClassName() to LIST_SPEC,
+                List::class.asClassName() to LIST_SPEC,
+                Set::class.asClassName() to
+                    collectionSpec(
+                        initializer = "mutableSetOf()",
+                        converter = "toMutableSet()",
+                        rawBuilderType = ClassName(COLLECTIONS_PKG, "MutableSet"),
+                    ),
             )
-        )
 
         fun forType(type: ClassName) = BUILTINS[type]
     }
