@@ -33,7 +33,10 @@ sealed interface PropertyDescriptor {
 
     companion object {
         @OptIn(KspExperimental::class)
-        fun fromPropertyDeclaration(prop: KSPropertyDeclaration, hasDefault: Boolean): PropertyDescriptor {
+        fun fromPropertyDeclaration(
+            prop: KSPropertyDeclaration,
+            hasDefault: Boolean,
+        ): PropertyDescriptor {
             val name = prop.simpleName.asString()
             val type = prop.type.toTypeName()
             val defaultAnnotation = prop.getAnnotationsByType(GenerateBuilder.Default::class).firstOrNull()
@@ -48,15 +51,16 @@ sealed interface PropertyDescriptor {
                 }
             }
 
-            val initialValue = if (defaultAnnotation != null) {
-                if (hasDefault) {
-                    defaultAnnotation.value
+            val initialValue =
+                if (defaultAnnotation != null) {
+                    if (hasDefault) {
+                        defaultAnnotation.value
+                    } else {
+                        error("property $name is annotated with Default but lacks a Kotlin default")
+                    }
                 } else {
-                    error("property $name is annotated with Default but lacks a Kotlin default")
+                    "null"
                 }
-            } else {
-                "null"
-            }
 
             return ScalarPropertyDescriptor(name, type, initialValue)
         }
@@ -66,7 +70,7 @@ sealed interface PropertyDescriptor {
 class ScalarPropertyDescriptor internal constructor(
     override val name: String,
     override val type: TypeName,
-    override val initialValue: String
+    override val initialValue: String,
 ) : PropertyDescriptor {
     override val builderType = if (initialValue == "null") type.copy(nullable = true) else type
     override val fromObjectConverter = ""
@@ -77,28 +81,31 @@ data class ContainerPropertyDescriptor internal constructor(
     override val type: TypeName,
     override val builderType: TypeName,
     val parameters: List<TypeName>,
-    val containerSpec: ContainerSpec
+    val containerSpec: ContainerSpec,
 ) : PropertyDescriptor {
-    override val fromObjectConverter = if (type.isNullable) {
-        "?.${containerSpec.converter}"
-    } else {
-        ".${containerSpec.converter}"
-    }
+    override val fromObjectConverter =
+        if (type.isNullable) {
+            "?.${containerSpec.converter}"
+        } else {
+            ".${containerSpec.converter}"
+        }
 
-    override val initialValue = if (type.isNullable) {
-        "null"
-    } else {
-        containerSpec.initializer
-    }
+    override val initialValue =
+        if (type.isNullable) {
+            "null"
+        } else {
+            containerSpec.initializer
+        }
 
     private val capitalizedName = name.replaceFirstChar(Char::titlecase)
 
     val initMethodName by lazy { "init$capitalizedName" }
     val insertMethodName = "${containerSpec.insertName}$capitalizedName"
     val insertAllMethodName = "${containerSpec.insertAllName}$capitalizedName"
-    val internalAccessor = if (builderType.isNullable) {
-        "$initMethodName()"
-    } else {
-        name
-    }
+    val internalAccessor =
+        if (builderType.isNullable) {
+            "$initMethodName()"
+        } else {
+            name
+        }
 }

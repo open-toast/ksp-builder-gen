@@ -23,5 +23,5 @@ class User(
     val email: String?,
     val addresses: List<String> = emptyList(),
     @GenerateBuilder.Default("true")
-    val active: Boolean = true
+    val active: Boolean = true,
 )
