@@ -47,6 +47,7 @@ class User(
 The generated code will look like this
 
 ```kotlin
+@GeneratedBuilder(forClass = User::class, kspVersion = "2.0.0")
 public class UserBuilder() {
     private var name: String? = null
     private var email: String? = null
@@ -85,6 +86,7 @@ class Container(
 will yield
 
 ```kotlin
+@GeneratedBuilder(forClass = Container::class, kspVersion = "2.0.0")
 public class ContainerBuilder() {
     public putMap(k: String, v: Long): ContainerBuilder // { ... }
     public putAllMap(Map<String, Long> map): ContainerBuilder // { ... }
