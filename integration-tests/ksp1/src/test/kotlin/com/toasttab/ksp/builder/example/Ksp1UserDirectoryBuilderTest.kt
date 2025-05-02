@@ -15,18 +15,21 @@
 
 package com.toasttab.ksp.builder.example
 
-import com.google.common.truth.Truth.assertThat
 import com.toasttab.ksp.builder.annotations.GeneratedBuilder
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
+import strikt.assertions.startsWith
 
 class Ksp1UserDirectoryBuilderTest : AbstractUserDirectoryBuilderTest() {
     @Test
     fun `DirectoryBuilder is generated with ksp1`() {
         val annotations = DirectoryBuilder::class.annotations.filterIsInstance<GeneratedBuilder>()
 
-        assertThat(annotations).hasSize(1)
+        expectThat(annotations).hasSize(1)
 
-        assertThat(annotations.first().forClass).isEqualTo(UserDirectory::class)
-        assertThat(annotations.first().kspVersion).startsWith("1.")
+        expectThat(annotations.first().forClass).isEqualTo(UserDirectory::class)
+        expectThat(annotations.first().kspVersion).startsWith("1.")
     }
 }

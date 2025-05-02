@@ -17,6 +17,7 @@ package com.toasttab.ksp.builder.descriptors
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType
+import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -30,6 +31,7 @@ sealed interface PropertyDescriptor {
     val builderType: TypeName
     val fromObjectConverter: String
     val initialValue: String
+    val constructorProperty: Boolean
 
     companion object {
         @OptIn(KspExperimental::class)
@@ -39,30 +41,40 @@ sealed interface PropertyDescriptor {
         ): PropertyDescriptor {
             val name = prop.simpleName.asString()
             val type = prop.type.toTypeName()
-            val defaultAnnotation = prop.getAnnotationsByType(GenerateBuilder.Default::class).firstOrNull()
+            val constructorProperty = prop.isAnnotationPresent(GenerateBuilder.BuilderConstructorProperty::class)
 
             if (type is ParameterizedTypeName) {
-                val custom = ContainerSpec.forType(type.rawType)
+                val containerSpec = ContainerSpec.forType(type.rawType)
 
-                if (custom != null) {
-                    val builderType = custom.rawBuilderType.parameterizedBy(type.typeArguments).copy(nullable = type.isNullable)
-
-                    return ContainerPropertyDescriptor(name, type, builderType, type.typeArguments, custom)
+                if (containerSpec != null) {
+                    return ContainerPropertyDescriptor(
+                        name = name,
+                        type = type,
+                        builderType = containerSpec.rawBuilderType.parameterizedBy(type.typeArguments).copy(nullable = type.isNullable),
+                        parameters = type.typeArguments,
+                        containerSpec = containerSpec,
+                        constructorProperty = constructorProperty,
+                    )
                 }
             }
 
-            val initialValue =
-                if (defaultAnnotation != null) {
-                    if (hasDefault) {
-                        defaultAnnotation.value
-                    } else {
-                        error("property $name is annotated with Default but lacks a Kotlin default")
-                    }
-                } else {
-                    "null"
-                }
+            val defaultAnnotation = prop.getAnnotationsByType(GenerateBuilder.Default::class).firstOrNull()
 
-            return ScalarPropertyDescriptor(name, type, initialValue)
+            return ScalarPropertyDescriptor(
+                name = name,
+                type = type,
+                initialValue =
+                    if (defaultAnnotation != null) {
+                        if (hasDefault) {
+                            defaultAnnotation.value
+                        } else {
+                            error("property $name is annotated with Default but lacks a Kotlin default")
+                        }
+                    } else {
+                        "null"
+                    },
+                constructorProperty = constructorProperty,
+            )
         }
     }
 }
@@ -71,6 +83,7 @@ class ScalarPropertyDescriptor internal constructor(
     override val name: String,
     override val type: TypeName,
     override val initialValue: String,
+    override val constructorProperty: Boolean,
 ) : PropertyDescriptor {
     override val builderType = if (initialValue == "null") type.copy(nullable = true) else type
     override val fromObjectConverter = ""
@@ -82,6 +95,7 @@ data class ContainerPropertyDescriptor internal constructor(
     override val builderType: TypeName,
     val parameters: List<TypeName>,
     val containerSpec: ContainerSpec,
+    override val constructorProperty: Boolean,
 ) : PropertyDescriptor {
     override val fromObjectConverter =
         if (type.isNullable) {

@@ -15,9 +15,16 @@
 
 package com.toasttab.ksp.builder.example
 
-import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import strikt.api.expectThat
+import strikt.api.expectThrows
+import strikt.assertions.any
+import strikt.assertions.contains
+import strikt.assertions.containsExactly
+import strikt.assertions.isA
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.message
 
 abstract class AbstractUserBuilderTest {
     @Test
@@ -25,8 +32,9 @@ abstract class AbstractUserBuilderTest {
         val builder = UserBuilder()
         builder.email("hi@hi.com")
 
-        val e = assertThrows<Exception> { builder.build() }
-        assertThat(e).hasMessageThat().contains("property name is not set")
+        expectThrows<Exception> { builder.build() }.and {
+            message.isNotNull().contains("property name is not set")
+        }
     }
 
     @Test
@@ -35,8 +43,8 @@ abstract class AbstractUserBuilderTest {
         builder.name("hi")
         builder.addresses(listOf())
         val o = builder.build()
-        assertThat(o.name).isEqualTo("hi")
-        assertThat(o.active).isEqualTo(true)
+        expectThat(o.name).isEqualTo("hi")
+        expectThat(o.active).isEqualTo(true)
     }
 
     @Test
@@ -47,9 +55,9 @@ abstract class AbstractUserBuilderTest {
         builder.addAddresses("123 Foo St")
         builder.addAllAddresses(Iterable { sequenceOf("200 Bar St").iterator() })
         val o = builder.build()
-        assertThat(o.name).isEqualTo("hi")
-        assertThat(o.email).isEqualTo("hi@hi.com")
-        assertThat(o.addresses).containsExactly("123 Foo St", "200 Bar St")
+        expectThat(o.name).isEqualTo("hi")
+        expectThat(o.email).isEqualTo("hi@hi.com")
+        expectThat(o.addresses).containsExactly("123 Foo St", "200 Bar St")
     }
 
     @Test
@@ -59,13 +67,15 @@ abstract class AbstractUserBuilderTest {
         builder.name("bye")
 
         val o = builder.build()
-        assertThat(o.name).isEqualTo("bye")
-        assertThat(o.email).isEqualTo("hi@hi.com")
-        assertThat(o.addresses).containsExactly("123 Foo St")
+        expectThat(o.name).isEqualTo("bye")
+        expectThat(o.email).isEqualTo("hi@hi.com")
+        expectThat(o.addresses).containsExactly("123 Foo St")
     }
 
     @Test
     fun `UserBuilder is deprecated`() {
-        assertThat(UserBuilder::class.annotations.filterIsInstance<Deprecated>()).isNotEmpty()
+        expectThat(UserBuilder::class.annotations).any {
+            isA<Deprecated>()
+        }
     }
 }

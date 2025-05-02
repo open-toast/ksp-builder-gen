@@ -26,4 +26,8 @@ annotation class GenerateBuilder(
     annotation class Default(
         val value: String,
     )
+
+    @Retention(AnnotationRetention.SOURCE)
+    @Target(AnnotationTarget.PROPERTY)
+    annotation class BuilderConstructorProperty
 }

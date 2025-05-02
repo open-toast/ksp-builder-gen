@@ -15,7 +15,7 @@ spotless = "7.0.3"
 
 # test
 junit = "5.12.2"
-truth = "1.4.4"
+strikt = "0.34.1"
 
 [plugins]
 ksp1 = { id = "com.google.devtools.ksp", version.ref = "ksp1"}
@@ -39,4 +39,4 @@ kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 # test
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher"}
-truth = { module = "com.google.truth:truth", version.ref = "truth" }
+strikt-core = { module = "io.strikt:strikt-core", version.ref = "strikt" }

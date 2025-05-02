@@ -15,18 +15,21 @@
 
 package com.toasttab.ksp.builder.example
 
-import com.google.common.truth.Truth.assertThat
 import com.toasttab.ksp.builder.annotations.GeneratedBuilder
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
+import strikt.assertions.startsWith
 
 class Ksp1UserBuilderTest : AbstractUserBuilderTest() {
     @Test
     fun `UserBuilder is generated with ksp1`() {
         val annotations = UserBuilder::class.annotations.filterIsInstance<GeneratedBuilder>()
 
-        assertThat(annotations).hasSize(1)
+        expectThat(annotations).hasSize(1)
 
-        assertThat(annotations.first().forClass).isEqualTo(User::class)
-        assertThat(annotations.first().kspVersion).startsWith("1.")
+        expectThat(annotations.first().forClass).isEqualTo(User::class)
+        expectThat(annotations.first().kspVersion).startsWith("1.")
     }
 }

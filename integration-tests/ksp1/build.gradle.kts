@@ -15,9 +15,9 @@ dependencies {
     implementation(projects.kspBuilderGenAnnotations)
 
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.truth)
+    testImplementation(libs.strikt.core)
 
-    testFixturesCompileOnly(libs.truth)
+    testFixturesCompileOnly(libs.strikt.core)
     testFixturesCompileOnly(libs.junit.jupiter)
 
     testRuntimeOnly(libs.junit.launcher)
