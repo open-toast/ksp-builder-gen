@@ -1,11 +1,13 @@
 plugins {
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.ksp1)
     `kotlin-conventions`
-    idea
+    `java-test-fixtures`
 }
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
@@ -15,5 +17,9 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.truth)
 
+    testFixturesCompileOnly(libs.truth)
+    testFixturesCompileOnly(libs.junit.jupiter)
+
     testRuntimeOnly(libs.junit.launcher)
+    testRuntimeOnly(kotlin("reflect"))
 }

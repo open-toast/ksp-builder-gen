@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Toast Inc.
+ * Copyright (c) 2025 Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.Collections
 
-class UserDirectoryBuilderTest {
+abstract class AbstractUserDirectoryBuilderTest {
     @Test
     fun `build`() {
         val directory =

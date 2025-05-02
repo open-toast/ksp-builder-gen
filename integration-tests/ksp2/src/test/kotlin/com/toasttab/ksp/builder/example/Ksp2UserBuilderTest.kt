@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Toast Inc.
+ * Copyright (c) 2025 Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,18 @@
 
 package com.toasttab.ksp.builder.example
 
-import com.toasttab.ksp.builder.annotations.GenerateBuilder
+import com.google.common.truth.Truth.assertThat
+import com.toasttab.ksp.builder.annotations.GeneratedBuilder
+import org.junit.jupiter.api.Test
 
-@GenerateBuilder(deprecated = true)
-class User(
-    val name: String,
-    val email: String?,
-    val addresses: List<String> = emptyList(),
-    @GenerateBuilder.Default("true")
-    val active: Boolean = true,
-)
+class Ksp2UserBuilderTest : AbstractUserBuilderTest() {
+    @Test
+    fun `UserBuilder is generated with ksp2`() {
+        val annotations = UserBuilder::class.annotations.filterIsInstance<GeneratedBuilder>()
+
+        assertThat(annotations).hasSize(1)
+
+        assertThat(annotations.first().forClass).isEqualTo(User::class)
+        assertThat(annotations.first().kspVersion).startsWith("2.")
+    }
+}

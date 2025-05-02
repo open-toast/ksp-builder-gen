@@ -13,17 +13,15 @@
  * limitations under the License.
  */
 
-package com.toasttab.ksp.builder.annotations
+package com.toasttab.ksp.builder.example
 
-@Retention(AnnotationRetention.SOURCE)
-@Target(AnnotationTarget.CLASS)
-annotation class GenerateBuilder(
-    val name: String = "",
-    val deprecated: Boolean = false,
-) {
-    @Retention(AnnotationRetention.SOURCE)
-    @Target(AnnotationTarget.PROPERTY)
-    annotation class Default(
-        val value: String,
-    )
-}
+import com.toasttab.ksp.builder.annotations.GenerateBuilder
+
+@GenerateBuilder(deprecated = true)
+class User(
+    val name: String,
+    val email: String?,
+    val addresses: List<String> = emptyList(),
+    @GenerateBuilder.Default("true")
+    val active: Boolean = true,
+)

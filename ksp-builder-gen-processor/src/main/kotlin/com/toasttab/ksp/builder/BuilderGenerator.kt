@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Toast Inc.
+ * Copyright (c) 2025 Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,14 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import com.toasttab.ksp.builder.annotations.GenerateBuilder
+import com.toasttab.ksp.builder.annotations.GeneratedBuilder
 import com.toasttab.ksp.builder.descriptors.ContainerPropertyDescriptor
 import com.toasttab.ksp.builder.descriptors.PropertyDescriptor
 import com.toasttab.ksp.builder.descriptors.SimpleClassDescriptor
 
 class BuilderGenerator(
     private val codeGenerator: CodeGenerator,
+    private val kspVersion: KotlinVersion,
     private val logger: KSPLogger,
 ) : SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
@@ -67,6 +69,14 @@ class BuilderGenerator(
                 TypeSpec
                     .classBuilder(builderClassName)
                     .apply {
+                        addAnnotation(
+                            AnnotationSpec
+                                .builder(GeneratedBuilder::class)
+                                .addMember("forClass = %T::class", ClassName(classDescriptor.packageName, classDescriptor.simpleName))
+                                .addMember("kspVersion = %S", kspVersion)
+                                .build(),
+                        )
+
                         if (classDescriptor.deprecated) {
                             addAnnotation(
                                 AnnotationSpec
