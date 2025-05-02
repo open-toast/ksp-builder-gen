@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Toast Inc.
+ * Copyright (c) 2025 Toast Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class UserBuilderTest {
+abstract class AbstractUserBuilderTest {
     @Test
     fun `build fails when a required property is missing`() {
         val builder = UserBuilder()
@@ -62,5 +62,10 @@ class UserBuilderTest {
         assertThat(o.name).isEqualTo("bye")
         assertThat(o.email).isEqualTo("hi@hi.com")
         assertThat(o.addresses).containsExactly("123 Foo St")
+    }
+
+    @Test
+    fun `UserBuilder is deprecated`() {
+        assertThat(UserBuilder::class.annotations.filterIsInstance<Deprecated>()).isNotEmpty()
     }
 }

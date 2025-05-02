@@ -13,4 +13,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "ksp-builder-gen"
 
-include(":ksp-builder-gen-annotations", ":ksp-builder-gen-processor", ":integration-tests")
+include(
+    ":ksp-builder-gen-annotations",
+    ":ksp-builder-gen-processor",
+    ":integration-tests:ksp1",
+    ":integration-tests:ksp2",
+)

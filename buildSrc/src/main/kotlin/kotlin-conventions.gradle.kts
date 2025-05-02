@@ -12,14 +12,6 @@ repositories {
 
 plugins {
     kotlin("jvm")
-    id("com.diffplug.spotless")
-}
-
-spotless {
-    kotlin {
-        ktlint()
-        targetExclude("build/generated/**")
-    }
 }
 
 configure<JavaPluginExtension> {

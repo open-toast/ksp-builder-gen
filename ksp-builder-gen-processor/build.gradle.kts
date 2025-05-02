@@ -1,15 +1,23 @@
 plugins {
     `kotlin-conventions`
     `publishing-conventions`
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.ksp2)
+    alias(libs.plugins.spotless)
+}
+
+spotless {
+    kotlin {
+        ktlint()
+    }
 }
 
 dependencies {
-    ksp(libs.autoservice.ksp)
+    compileOnly(libs.ksp.api)
+
     implementation(projects.kspBuilderGenAnnotations)
-    implementation(kotlin("stdlib"))
-    implementation(libs.ksp.api)
     implementation(libs.autoservice.annotations)
     implementation(libs.kotlinPoet)
     implementation(libs.kotlinPoetKsp)
+
+    ksp(libs.autoservice.ksp)
 }

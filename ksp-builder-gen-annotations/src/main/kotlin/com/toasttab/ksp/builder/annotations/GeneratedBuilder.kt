@@ -15,15 +15,11 @@
 
 package com.toasttab.ksp.builder.annotations
 
-@Retention(AnnotationRetention.SOURCE)
+import kotlin.reflect.KClass
+
+@Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class GenerateBuilder(
-    val name: String = "",
-    val deprecated: Boolean = false,
-) {
-    @Retention(AnnotationRetention.SOURCE)
-    @Target(AnnotationTarget.PROPERTY)
-    annotation class Default(
-        val value: String,
-    )
-}
+annotation class GeneratedBuilder(
+    val forClass: KClass<*>,
+    val kspVersion: String,
+)
