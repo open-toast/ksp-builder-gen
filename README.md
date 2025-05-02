@@ -17,7 +17,7 @@ You have to bring in the KSP plugin
 
 ```kotlin
 plugins {
-    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
+    id("com.google.devtools.ksp") version "2.1.20-2.0.1"
 }
 ```
 
@@ -29,6 +29,8 @@ dependencies {
     ksp("com.toasttab.ksp.builder:ksp-builder-gen-processor:${version}")
 }
 ```
+
+Note that for the time being, this processor supports both KSP 1 and KSP 2.
 
 ### Code Generation
 
