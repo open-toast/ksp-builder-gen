@@ -15,7 +15,7 @@ spotless = "7.0.3"
 
 # test
 junit = "5.12.2"
-truth = "1.1.3"
+truth = "1.4.4"
 
 [plugins]
 ksp1 = { id = "com.google.devtools.ksp", version.ref = "ksp1"}
