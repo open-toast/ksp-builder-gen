@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.kspBuilderGenAnnotations)
 
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.truth)
+    testImplementation(libs.strikt.core)
 
     testImplementation(testFixtures(projects.integrationTests.ksp1))
 

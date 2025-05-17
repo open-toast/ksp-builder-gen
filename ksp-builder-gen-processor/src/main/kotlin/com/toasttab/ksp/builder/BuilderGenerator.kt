@@ -100,7 +100,7 @@ class BuilderGenerator(
                             }
                         }
 
-                        primaryConstructor(FunSpec.constructorBuilder().build())
+                        primaryConstructor(classDescriptor.makePrimaryConstructor())
                         addFunction(classDescriptor.makeCopyConstructor())
                         addFunction(classDescriptor.makeBuildMethod())
                     }.build(),
@@ -114,7 +114,11 @@ class BuilderGenerator(
             .mutable()
             .addModifiers(KModifier.PRIVATE)
             .initializer(initialValue)
-            .build()
+            .apply {
+                if (constructorProperty) {
+                    initializer(name)
+                }
+            }.build()
 
     private fun PropertyDescriptor.makeSetter(thisName: ClassName) =
         FunSpec
@@ -175,13 +179,27 @@ class BuilderGenerator(
             .build()
     }
 
+    private fun SimpleClassDescriptor.makePrimaryConstructor() =
+        FunSpec
+            .constructorBuilder()
+            .apply {
+                for (prop in constructorProperties) {
+                    addParameter(
+                        ParameterSpec
+                            .builder(prop.name, prop.type)
+                            .build(),
+                    )
+                }
+            }.build()
+
     private fun SimpleClassDescriptor.makeCopyConstructor() =
         FunSpec
             .constructorBuilder()
-            .callThisConstructor()
-            .addParameter("o", ClassName(packageName, simpleName))
+            .callThisConstructor(
+                args = constructorProperties.map { "o.${it.name}${it.fromObjectConverter}" }.toTypedArray(),
+            ).addParameter("o", ClassName(packageName, simpleName))
             .apply {
-                for (prop in properties) {
+                for (prop in nonConstructorProperties) {
                     addStatement("this.${prop.name} = o.${prop.name}${prop.fromObjectConverter}")
                 }
             }.build()

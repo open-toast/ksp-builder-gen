@@ -15,36 +15,41 @@
 
 package com.toasttab.ksp.builder.example
 
-import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import strikt.api.expectThat
+import strikt.assertions.containsExactly
+import strikt.assertions.isEmpty
+import strikt.assertions.isEqualTo
 import java.util.Collections
 
 abstract class AbstractUserDirectoryBuilderTest {
     @Test
     fun `build`() {
         val directory =
-            DirectoryBuilder()
+            DirectoryBuilder("org")
                 .putAllUsers(mapOf("1" to User("Foo", null), "2" to User("Bar", null)))
                 .putUsers("3", User("Zzz", null))
                 .build()
 
-        assertThat(directory.users.mapValues { it.value.name }).containsExactly("1", "Foo", "2", "Bar", "3", "Zzz")
+        expectThat(directory.organization).isEqualTo("org")
+        expectThat(directory.users.mapValues { it.value.name }.toList())
+            .containsExactly("1" to "Foo", "2" to "Bar", "3" to "Zzz")
     }
 
     @Test
     fun `allow not setting not nullable collection`() {
-        val directory = assertDoesNotThrow { DirectoryBuilder().build() }
-        assertThat(directory.users).isEmpty()
+        val directory = assertDoesNotThrow { DirectoryBuilder("org").build() }
+        expectThat(directory.users).isEmpty()
     }
 
     @Test
     fun `verify collections are defensively copied`() {
-        val builder = DirectoryBuilder(UserDirectory(Collections.emptyMap(), Collections.emptyMap()))
+        val builder = DirectoryBuilder(UserDirectory("org", Collections.emptyMap(), Collections.emptyMap()))
         val directory =
             assertDoesNotThrow {
                 builder.putUsers("1", User("Foo", null)).build()
             }
-        assertThat(directory.users.mapValues { it.value.name }).containsExactly("1", "Foo")
+        expectThat(directory.users.mapValues { it.value.name }.toList()).containsExactly("1" to "Foo")
     }
 }

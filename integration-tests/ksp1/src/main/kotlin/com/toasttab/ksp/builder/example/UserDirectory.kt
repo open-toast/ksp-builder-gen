@@ -19,6 +19,8 @@ import com.toasttab.ksp.builder.annotations.GenerateBuilder
 
 @GenerateBuilder("DirectoryBuilder")
 class UserDirectory(
+    @GenerateBuilder.BuilderConstructorProperty
+    val organization: String,
     val users: Map<String, User>,
     val otherUsers: Map<String, User>?,
 )

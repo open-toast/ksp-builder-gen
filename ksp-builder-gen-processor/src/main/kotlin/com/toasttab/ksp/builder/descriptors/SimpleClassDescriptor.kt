@@ -28,6 +28,9 @@ class SimpleClassDescriptor private constructor(
     val properties: List<PropertyDescriptor>,
     val deprecated: Boolean,
 ) {
+    val constructorProperties: List<PropertyDescriptor> get() = properties.filter { it.constructorProperty }
+    val nonConstructorProperties: List<PropertyDescriptor> get() = properties.filter { !it.constructorProperty }
+
     companion object {
         @OptIn(KspExperimental::class)
         fun fromDeclaration(cls: KSClassDeclaration): SimpleClassDescriptor {
