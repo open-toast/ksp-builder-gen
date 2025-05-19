@@ -4,7 +4,7 @@ autoservice = "1.0"
 autoservice-ksp = "1.2.0"
 
 kotlin = "2.1.21"
-kotlinPoet = "2.1.0"
+kotlinPoet = "2.2.0"
 
 ksp1 = "2.1.20-1.0.32"
 ksp2 = "2.1.20-2.0.1"
