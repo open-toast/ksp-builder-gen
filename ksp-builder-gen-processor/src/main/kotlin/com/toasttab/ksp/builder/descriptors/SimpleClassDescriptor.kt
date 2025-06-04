@@ -43,25 +43,25 @@ class SimpleClassDescriptor private constructor(
 
             val properties = cls.getAllProperties().associateBy { it.simpleName.asString() }
 
+            val simpleName = cls.simpleName.asString()
+
             val actualProperties =
                 constructor.parameters.map {
                     if (!it.isVal && !it.isVar) {
-                        error("constructor parameter ${it.name} of ${cls.simpleName}  is not backed by a property")
+                        error("constructor parameter ${it.name} of $simpleName  is not backed by a property")
                     }
 
                     val prop =
                         checkNotNull(properties[it.name!!.asString()]) {
-                            "constructor parameter ${it.name} of ${cls.simpleName} is not backed by a property"
+                            "constructor parameter ${it.name} of $simpleName is not backed by a property"
                         }
 
                     if (!prop.isPublic()) {
-                        error("property ${prop.simpleName} of ${cls.simpleName} is not public")
+                        error("property ${prop.simpleName.asString()} of $simpleName must be public")
                     }
 
                     PropertyDescriptor.fromPropertyDeclaration(prop = prop, hasDefault = it.hasDefault)
                 }
-
-            val simpleName = cls.simpleName.asString()
 
             val builderName = annotation.name.ifEmpty { "${simpleName}Builder" }
 
