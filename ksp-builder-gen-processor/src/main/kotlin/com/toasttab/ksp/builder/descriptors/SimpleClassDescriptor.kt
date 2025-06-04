@@ -57,7 +57,7 @@ class SimpleClassDescriptor private constructor(
                         }
 
                     if (!prop.isPublic()) {
-                        error("property ${prop.simpleName.asString()} of $simpleName must be public")
+                        error("property ${prop.simpleName.asString()} of $simpleName is not public")
                     }
 
                     PropertyDescriptor.fromPropertyDeclaration(prop = prop, hasDefault = it.hasDefault)
