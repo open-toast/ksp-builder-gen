@@ -15,6 +15,7 @@
 
 package com.toasttab.ksp.builder
 
+import com.google.devtools.ksp.isInternal
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
@@ -56,6 +57,13 @@ class BuilderGenerator(
         return emptyList()
     }
 
+    private fun builderModifiers(declaration: KSClassDeclaration): Iterable<KModifier> =
+        if (declaration.isInternal()) {
+            listOf(KModifier.INTERNAL)
+        } else {
+            emptyList()
+        }
+
     private fun generateBuilderClass(decl: KSClassDeclaration) {
         val classDescriptor = SimpleClassDescriptor.fromDeclaration(decl)
 
@@ -69,6 +77,7 @@ class BuilderGenerator(
                 TypeSpec
                     .classBuilder(builderClassName)
                     .apply {
+                        addModifiers(builderModifiers(decl))
                         addAnnotation(
                             AnnotationSpec
                                 .builder(GeneratedBuilder::class)
