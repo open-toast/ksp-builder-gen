@@ -11,7 +11,7 @@ ksp2 = "2.1.21-2.0.2"
 
 # plugins
 nexus = "1.3.0"
-spotless = "7.0.4"
+spotless = "7.1.0"
 
 # test
 junit = "5.13.2"
