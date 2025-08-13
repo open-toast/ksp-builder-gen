@@ -6,7 +6,7 @@ autoservice-ksp = "1.2.0"
 kotlin = "2.1.21"
 kotlinPoet = "2.2.0"
 
-ksp1 = "2.1.20-1.0.32"
+ksp1 = "2.2.0-2.0.2"
 ksp2 = "2.1.21-2.0.2"
 
 # plugins
