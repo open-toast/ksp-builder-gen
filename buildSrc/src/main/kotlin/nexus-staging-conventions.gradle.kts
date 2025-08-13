@@ -6,8 +6,10 @@ if (isRelease()) {
     nexusPublishing {
         repositories {
             sonatype {
-                username.set(Remote.username)
-                password.set(Remote.password)
+                nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
+
+                username = Remote.username
+                password = Remote.password
             }
         }
     }
