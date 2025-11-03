@@ -14,7 +14,7 @@ nexus = "2.0.0"
 spotless = "8.0.0"
 
 # test
-junit = "5.13.4"
+junit = "6.0.1"
 strikt = "0.34.1"
 
 [plugins]
